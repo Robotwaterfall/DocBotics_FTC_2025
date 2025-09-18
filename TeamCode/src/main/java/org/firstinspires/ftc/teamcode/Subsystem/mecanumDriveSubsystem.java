@@ -19,12 +19,12 @@ public class mecanumDriveSubsystem extends SubsystemBase {
     private final PIDController headingController;
     private double targetHeading;
 
-    public mecanumDriveSubsystem (Motor Fl, Motor Fr,
-                                  Motor Rl, Motor Rr, HardwareMap hardwareMap){
-        m_Fl = Fl;
-        m_Fr = Fr;
-        m_Rl = Rl;
-        m_Rr = Rr;
+    public mecanumDriveSubsystem (Motor front_left, Motor front_right,
+                                  Motor back_left, Motor back_right, HardwareMap hardwareMap){
+        m_Fl = front_left;
+        m_Fr = front_right;
+        m_Rl = back_left;
+        m_Rr = back_right;
 
         //IMU setup
         imu = hardwareMap.get(IMU.class, "imu");
