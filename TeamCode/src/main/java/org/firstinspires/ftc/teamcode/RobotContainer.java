@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -48,11 +49,14 @@ public class RobotContainer extends CommandOpMode {
          * unless a different Op mode is selected
          */
         driveSub.setDefaultCommand(
+
+
                 new teleOpMecanumDriveCommand(
                         driveSub,
                         () -> applyDeadband(driverJoystick.getLeftY(), 0.05),  // Forward/back
-                        () -> applyDeadband(driverJoystick.getLeftX(), 0.05),   // Strafe
-                        () -> applyDeadband(driverJoystick.getRightX(), 0.05)   // Rotate
+                        () -> applyDeadband(driverJoystick.getLeftX(), 0.05),  // Strafe
+                        () -> applyDeadband(driverJoystick.getRightX(), 0.05), // Rotate
+                        () -> driverJoystick.getButton(GamepadKeys.Button.A)  // Field-centric toggle (true while held)
                 )
         );
     }

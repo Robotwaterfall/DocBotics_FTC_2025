@@ -1,116 +1,103 @@
 package org.firstinspires.ftc.teamcode.Subsystem;
 
-import com.arcrobotics.ftclib.command.SubsystemBase;
-import com.arcrobotics.ftclib.controller.PIDController;
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.IMU;
-
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 public class mecanumDriveSubsystem extends SubsystemBase {
 
-    public final Motor m_Fl, m_Fr, m_Rl, m_Rr;
-    public double fwdPower;
-    public double strPower;
-    public double rotPower;
-    private final IMU imu;
-    private final PIDController headingController;
-    private double targetHeading;
+    private final Motor m_Fl, m_Fr, m_Rl, m_Rr;
 
-    public mecanumDriveSubsystem(Motor front_left, Motor front_right,
-                                 Motor back_left, Motor back_right,
-                                 HardwareMap hardwareMap) {
+    // Store last joystick values for telemetry
+    private double fwdPower, strPower, rotPower;
 
-        m_Fl = front_left;
-        m_Fr = front_right;
-        m_Rl = back_left;
-        m_Rr = back_right;
+    private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
-        // Invert right side motors (FTC mecanum standard)
+    public mecanumDriveSubsystem(Motor frontLeft, Motor frontRight, Motor backLeft, Motor backRight, HardwareMap hardwareMap) {
+        m_Fl = frontLeft;
+        m_Fr = frontRight;
+        m_Rl = backLeft;
+        m_Rr = backRight;
+
+        // Set motor directions (typical mecanum setup)
+        m_Fl.setInverted(false);
         m_Fr.setInverted(true);
+        m_Rl.setInverted(false);
         m_Rr.setInverted(true);
-
-        // IMU setup
-        imu = hardwareMap.get(IMU.class, "imu");
-        IMU.Parameters parameters = new IMU.Parameters(
-                new RevHubOrientationOnRobot(
-                        RevHubOrientationOnRobot.LogoFacingDirection.UP,
-                        RevHubOrientationOnRobot.UsbFacingDirection.LEFT
-                )
-        );
-        imu.initialize(parameters);
-
-        // Reset IMU so heading = 0 when robot faces forward
-        imu.resetYaw();
-
-        // PID controller for heading hold
-        headingController = new PIDController(0.02, 0, 0.001);
-        targetHeading = 0;
-    }
-
-    public double getHeading() {
-        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
     }
 
     /**
-     * wraps an angle in radians to the range [-pi, pi]
+     * Drive method for teleop.
+     * @param forward forward/backward input (-1 to 1)
+     * @param strafe left/right input (-1 to 1)
+     * @param rotation rotation input (-1 to 1)
+     * @param fieldCentric whether to use field-centric control
      */
-    private double wrapAngle(double angle) {
-        while (angle > Math.PI) angle -= 2 * Math.PI;
-        while (angle < -Math.PI) angle += 2 * Math.PI;
-        return angle;
-    }
+    public void drive(double forward, double strafe, double rotation, boolean fieldCentric) {
+        // Apply deadzone
+        forward = applyDeadzone(forward, 0.05);
+        strafe  = applyDeadzone(strafe, 0.05);
+        rotation = applyDeadzone(rotation, 0.05);
 
-    public void drive(double forward, double strafe, double rotation,
-                      boolean fieldCentric, boolean headingLock) {
         fwdPower = forward;
         strPower = strafe;
         rotPower = rotation;
 
         // Field-centric transform
         if (fieldCentric) {
-            double heading = getHeading();
+            double heading = -getHeading(); // Negate if needed
             double temp = forward * Math.cos(heading) + strafe * Math.sin(heading);
             strafe = -forward * Math.sin(heading) + strafe * Math.cos(heading);
             forward = temp;
         }
 
-        // Heading lock (only if driver isn't commanding rotation)
-        if (headingLock && Math.abs(rotation) < 0.05) {
-            double error = wrapAngle(targetHeading - getHeading());
-            rotation = headingController.calculate(0, error);  // drive error to 0
-        } else {
-            targetHeading = getHeading();
-        }
-
         // Mecanum kinematics
-        double front_left  = forward + strafe + rotation;
-        double front_right = forward - strafe - rotation;
-        double back_left   = forward - strafe + rotation;
-        double back_right  = forward + strafe - rotation;
+        double fl = forward + strafe + rotation;
+        double fr = forward - strafe + rotation;
+        double bl = forward - strafe - rotation;
+        double br = forward + strafe - rotation;
 
-        // Normalize
-        double max = Math.max(1.0, Math.max(Math.abs(front_left),
-                Math.max(Math.abs(front_right), Math.max(Math.abs(back_left), Math.abs(back_right)))));
+        // Normalize motor powers
+        double max = Math.max(1.0, Math.max(Math.abs(fl), Math.max(Math.abs(fr), Math.max(Math.abs(bl), Math.abs(br)))));
+        fl /= max;
+        fr /= max;
+        bl /= max;
+        br /= max;
 
         // Set motor powers
-        m_Fl.set(front_left / max);
-        m_Fr.set(front_right / max);
-        m_Rl.set(back_left / max);
-        m_Rr.set(back_right / max);
+        m_Fl.set(fl);
+        m_Fr.set(fr);
+        m_Rl.set(bl);
+        m_Rr.set(br);
     }
 
-    // Power getters
-    public double getFwdPower() { return fwdPower; }
-    public double getStrPower() { return strPower; }
-    public double getRotPower() { return rotPower; }
+    // Deadzone helper
+    private double applyDeadzone(double value, double threshold) {
+        return Math.abs(value) > threshold ? value : 0;
+    }
 
-    // Motor getters
-    public Motor getM_Fl() { return m_Fl; }
-    public Motor getM_Fr() { return m_Fr; }
-    public Motor getM_Rl() { return m_Rl; }
-    public Motor getM_Rr() { return m_Rr; }
+    // --- Placeholder heading method ---
+    // Replace this with your IMU code
+    public double getHeading() {
+        // Return robot heading in radians
+        // Example: imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        return 0.0;
+    }
+
+    @Override
+    public void periodic() {
+        // Send telemetry to FTC Dashboard
+        TelemetryPacket packet = new TelemetryPacket();
+        packet.put("Forward", fwdPower);
+        packet.put("Strafe", strPower);
+        packet.put("Rotation", rotPower);
+        packet.put("FL Power", m_Fl.get());
+        packet.put("FR Power", m_Fr.get());
+        packet.put("BL Power", m_Rl.get());
+        packet.put("BR Power", m_Rr.get());
+        packet.put("Heading (deg)", Math.toDegrees(getHeading()));
+        dashboard.sendTelemetryPacket(packet);
+    }
 }
