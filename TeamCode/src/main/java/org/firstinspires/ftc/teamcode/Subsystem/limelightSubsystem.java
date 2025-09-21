@@ -7,18 +7,22 @@ import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.Constants;
+
 public class limelightSubsystem extends SubsystemBase {
 
     Limelight3A limelight;
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
-    private static final double camera_Height = 0.52; //meters
-    private static final double target_Height = 0.82; //meters
-    private static final double camera_Angle = 75.0; //degrees
+    private static final double camera_Height   = Constants.camera_Height; //meters
+    private static final double target_Height   = Constants.target_Height; //meters
+    private static final double camera_Angle    = Constants.camera_Angle; //degrees
 
 
     public limelightSubsystem(HardwareMap hardwareMap){
         this.limelight = hardwareMap.get(Limelight3A.class, "limelight");
+        limelight.setPollRateHz(100);
+        limelight.start();
     }
     public boolean hasTarget(){
         LLResult r = limelight.getLatestResult();

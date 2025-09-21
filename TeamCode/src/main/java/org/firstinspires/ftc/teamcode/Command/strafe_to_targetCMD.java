@@ -2,14 +2,15 @@ package org.firstinspires.ftc.teamcode.Command;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Subsystem.limelightSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystem.mecanumDriveSubsystem;
 
 public class strafe_to_targetCMD extends CommandBase {
     private final mecanumDriveSubsystem drive;
     private final limelightSubsystem llSub;
-    private final double kP = 0.05; //simple proportional gain
-    private final double deadband = 1.0; //degrees in which we stop
+    private final double kPStrafe = Constants.kPStrafe; //simple proportional gain
+    private final double deadband = Constants.deadband; //degrees in which we stop
     public strafe_to_targetCMD(mecanumDriveSubsystem drive, limelightSubsystem llSub){
         this.drive = drive;
         this.llSub = llSub;
@@ -20,7 +21,7 @@ public class strafe_to_targetCMD extends CommandBase {
     public void execute(){
         if(llSub.hasTarget()) {
             double error = llSub.getTx(); //horizontal offset in degrees
-            double strafePower = -error * kP; //negative to correct direction
+            double strafePower = -error * kPStrafe; //negative to correct direction
             //clipped power to [-0.4, 0.4] for safety
             strafePower = Math.max(Math.min(strafePower, 0.4), -0.4);
 

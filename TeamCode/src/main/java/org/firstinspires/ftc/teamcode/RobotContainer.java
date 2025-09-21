@@ -8,6 +8,8 @@ import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Const;
+import org.firstinspires.ftc.teamcode.Command.drive_straight_to_distanceCMD;
 import org.firstinspires.ftc.teamcode.Command.strafe_to_targetCMD;
 import org.firstinspires.ftc.teamcode.Command.teleOpMecanumDriveCommand;
 import org.firstinspires.ftc.teamcode.Subsystem.limelightSubsystem;
@@ -68,6 +70,11 @@ public class RobotContainer extends CommandOpMode {
                 .whenPressed(() -> {
                     // Schedule the command manually
                     new strafe_to_targetCMD(driveSub, llSub).schedule();
+                });
+        driverJoystick.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
+                .whenPressed(() -> {
+
+                    new drive_straight_to_distanceCMD(driveSub, llSub, Constants.targetDistanceMeters).schedule();
                 });
 
 
