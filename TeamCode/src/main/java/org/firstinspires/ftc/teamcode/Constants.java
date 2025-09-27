@@ -5,14 +5,14 @@ public class Constants {
     // =======Limelight Settings=======
     public static final double camera_Height        = 0.52;
     public static final double target_Height        = 0.82;
-    public static final double camera_Angle         = 75.0;
+    public static final double camera_Angle         = 92.0;
 
     // =======PID Gains=======
     public static final double kPRotation           = 0.05;
 
     // =======Tolerance and Deadband=======
     public static final double tolerance            = 0.05; //offset of the rotation and forwarding
-    public static final double deadband             = 1.0; //degrees in which we stop strafing
+    public static final double deadband             = 1.0; //degrees in which we stop rotating
 
     // =======Target Setpoints=======
     public static final double targetDistanceMeters = 2;
