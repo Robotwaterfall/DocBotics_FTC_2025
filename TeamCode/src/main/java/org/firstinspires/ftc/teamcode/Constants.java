@@ -1,21 +1,24 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.dashboard.config.Config;
+
+@Config
 public class Constants {
 
     // =======Limelight Settings=======
-    public static final double camera_Height        = 0.52;
-    public static final double target_Height        = 0.82;
-    public static final double camera_Angle         = 92.0;
+    public static  double camera_Height        = 0.52;
+    public static  double target_Height        = 0.82;
+    public static  double camera_Angle         = 85.0;
 
     // =======PID Gains=======
-    public static final double kPRotation           = 0.05;
+    public static  double kPRotation           = 0.02;
 
     // =======Tolerance and Deadband=======
-    public static final double tolerance            = 0.05; //offset of the rotation and forwarding
-    public static final double deadband             = 1.0; //degrees in which we stop rotating
+    public static  double tolerance            = 0.05; //offset of the rotation and forwarding
+    public static  double deadband             = 1.5; //degrees in which we stop rotating
 
     // =======Target Setpoints=======
-    public static final double targetDistanceMeters = 2;
+    public static  double targetDistanceMeters = 2;
 
 
     private Constants() { }
