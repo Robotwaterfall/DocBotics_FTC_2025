@@ -55,18 +55,22 @@ public class RobotContainer extends CommandOpMode {
          */
         driveSub.setDefaultCommand(
                 new teleOpMecanumDriveCommand(
-                        driveSub,
+                        driveSub, llSub,
                         () -> applyDeadband(driverJoystick.getLeftY(), 0.05),  // Forward/back
                         () -> applyDeadband(driverJoystick.getLeftX(), 0.05),  // Strafe
                         () -> applyDeadband(driverJoystick.getRightX(), 0.05) // Rotate
                 )
         );
 
-        driverJoystick.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
-                .whenPressed(() -> {
+        /*
+        commented out the rotate to target command for testing purposes
+        **/
+
+        //driverJoystick.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
+        //        .whenPressed(() -> {
                     // Schedule the command manually
-                    new rotateToTargetCMD(driveSub, llSub).schedule();
-                });
+        //            new rotateToTargetCMD(driveSub, llSub).schedule();
+        //        });
 
 
     }
