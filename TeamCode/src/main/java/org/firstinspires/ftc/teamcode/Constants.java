@@ -15,10 +15,10 @@ public class Constants {
 
     // =======Tolerance and Deadband=======
     public static  double tolerance            = 0.05; //offset of the rotation and forwarding
-    public static  double deadband             = 1.5; //degrees in which we stop rotating
+    public static  double deadband             = 1.0; //degrees in which we stop rotating
 
     // =======Target Setpoints=======
-    public static  double targetDistanceMeters = 2;
+    //public static  double targetDistanceMeters = 2;
 
 
     private Constants() { }

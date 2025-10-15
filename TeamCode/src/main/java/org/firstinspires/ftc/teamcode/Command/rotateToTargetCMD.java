@@ -14,6 +14,7 @@ public class rotateToTargetCMD extends CommandBase {
     private final limelightSubsystem llSub;
     private final double kPRotation = Constants.kPRotation; //simple proportional gain
     private final double deadband = Constants.deadband; //degrees in which we stop
+
     public rotateToTargetCMD(mecanumDriveSubsystem drive, limelightSubsystem llSub){
         this.drive = drive;
         this.llSub = llSub;
@@ -33,14 +34,14 @@ public class rotateToTargetCMD extends CommandBase {
             rotPower = Math.max(Math.min(rotPower, 0.3), -0.3);
             double strPower = rotPower;
 
-            drive.drive(strPower, 0, rotPower); //rot only
+            drive.drive(strPower, 0, rotPower); //str and rot only
         }
     }
 
     @Override
     public boolean isFinished(){
         //if limelight returns with target and the Tx is less then the deadband the command will finish
-        return Math.abs(llSub.getTx()) < deadband;
+        return llSub.hasTarget() && Math.abs(llSub.getTx()) < deadband;
     }
 
     @Override
