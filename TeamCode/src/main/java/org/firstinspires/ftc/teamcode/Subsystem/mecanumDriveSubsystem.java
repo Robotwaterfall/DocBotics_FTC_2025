@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.Constants;
 
 public class mecanumDriveSubsystem extends SubsystemBase {
 
@@ -115,11 +116,12 @@ public class mecanumDriveSubsystem extends SubsystemBase {
 
         //SOOS is rotated 90 degrees from recomend configuration
         // so readings for x and y need to be swapped
-        packet.put("SOOS X INCHES", myOtos.getPosition().y * 1.65 );
-        packet.put("SOOS Y INCHES", myOtos.getPosition().x * 1.65);
-        packet.put("SOOS angle Degrees ", myOtos.getPosition().h);
-        packet.put("SOOS Linear scaler ", myOtos.getLinearScalar());
-        packet.put("SOOS angular scaler ", myOtos.getAngularScalar());
+        packet.put("SOOS X INCHES", myOtos.getPosition().y * Constants.soos_Linear_scaler );
+        packet.put("SOOS Y INCHES", myOtos.getPosition().x * Constants.soos_Linear_scaler );
+        packet.put("SOOS angle Degrees ", myOtos.getPosition().h *Constants.soos_Angular_scaler);
+        packet.put("SOOS Linear scaler ", Constants.soos_Linear_scaler );
+        // + counter clockwise, - clockwise
+        packet.put("SOOS angular scaler ", Constants.soos_Angular_scaler);
 
 
         dashboard.sendTelemetryPacket(packet);
@@ -173,8 +175,8 @@ public class mecanumDriveSubsystem extends SubsystemBase {
         // multiple speeds to get an average, then set the linear scalar to the
         // inverse of the error. For example, if you move the robot 100 inches and
         // the sensor reports 103 inches, set the linear scalar to 100/103 = 0.971
-        myOtos.setLinearScalar(1.2426);
-        myOtos.setAngularScalar(1.0);
+        myOtos.setLinearScalar(1);
+        myOtos.setAngularScalar(1);
 
         // The IMU on the OTOS includes a gyroscope and accelerometer, which could
         // have an offset. Note that as of firmware version 1.0, the calibration
@@ -209,7 +211,7 @@ public class mecanumDriveSubsystem extends SubsystemBase {
     public void resetOtosPos(){
         SparkFunOTOS.Pose2D currentPosition = new SparkFunOTOS.Pose2D(0, 0, 0);
         myOtos.setPosition(currentPosition);
-        myOtos.setLinearScalar(1.2426);
+        myOtos.setLinearScalar(1.0);
         myOtos.setAngularScalar(1.0);
     }
 
