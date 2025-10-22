@@ -17,12 +17,17 @@ public class Constants {
     //measured at 13.2
     public static double  drivetrain_ka = 0.00124;
 
+    // Heading PID
+    public static double heading_Kp = 0;
+    public static double heading_Ki = 0;
+    public static double heading_Kd = 0;
+
+
 
     //drivetrain Trapezoidal drive constants
-    public static double drivetrain_maxAccel = 10.0; //inches/sec^2
-    public static double drivetrain_maxVelocity = 15.0; //inches/sec
-    public static double drivetrain_targetDistance = 20.0; // Measured in inches
-
+    public static double drivetrain_maxAccel = 20.0; //inches/sec^2
+    public static double drivetrain_maxVelocity = 30.0; //inches/sec
+    public static double drivetrain_targetDistance = 45.0; // Measured in inches
 
 
     private Constants() { }
