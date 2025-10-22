@@ -176,8 +176,8 @@ public class SOOS_TrapezoidalDrive extends OpMode {
         //set powers to motors
         front_left.set(leftPower);
         front_right.set(rightPower);
-        back_left.set(leftPower);
-        back_right.set(rightPower);
+        back_left.set(-leftPower);
+        back_right.set(-rightPower);
 
         // --- Telemetry ---
         packet.put("Phase", currentPhase);
@@ -186,6 +186,7 @@ public class SOOS_TrapezoidalDrive extends OpMode {
         packet.put("Desired Accel", desiredAccel);
         packet.put("Feedforward", feedforward);
         packet.put("Distance", distanceTraveled);
+        packet.put("heading", currentHeading);
         dashboard.sendTelemetryPacket(packet);
     }
 

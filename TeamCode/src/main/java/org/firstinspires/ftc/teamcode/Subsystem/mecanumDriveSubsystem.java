@@ -19,6 +19,9 @@ public class mecanumDriveSubsystem extends SubsystemBase {
 
     private final Motor m_Fl, m_Fr, m_Rl, m_Rr;
     private final SparkFunOTOS myOtos;
+    public double SOOS_x = 0;
+    public double SOOS_y = 0;
+    public double SOOS_h = 0;
 
     // Store last joystick values for telemetry
     private double fwdPower, strPower, rotPower;
@@ -103,7 +106,10 @@ public class mecanumDriveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // Send telemetry to FTC Dashboard
+
+
+
+        // Send robot telemetry to FTC Dashboard
         TelemetryPacket packet = new TelemetryPacket();
         packet.put("Forward", fwdPower);
         packet.put("Strafe", strPower);
@@ -114,13 +120,17 @@ public class mecanumDriveSubsystem extends SubsystemBase {
         packet.put("BR Power", m_Rr.get());
         packet.put("Heading (deg) IMU", Math.toDegrees(getHeading()));
 
+        //update SOOS robot position
+        //SOOS is rotate 90 degrees from what the robot should be,
+        // so readings for x and y need to be swapped.
+        SOOS_x = myOtos.getPosition().y  * soos_Linear_scaler;
+        SOOS_y = myOtos.getPosition().x * soos_Linear_scaler;
+        SOOS_h = myOtos.getPosition().h * soos_Angular_scaler;
+        //send SOOS telemetry.
 
-
-        //SOOS is rotated 90 degrees from recomend configuration
-        // so readings for x and y need to be swapped
-        packet.put("SOOS X INCHES", myOtos.getPosition().y  * soos_Linear_scaler );
-        packet.put("SOOS Y INCHES", myOtos.getPosition().x * soos_Linear_scaler);
-        packet.put("SOOS angle Degrees ", myOtos.getPosition().h * soos_Angular_scaler);
+        packet.put("SOOS X INCHES", SOOS_x);
+        packet.put("SOOS Y INCHES", SOOS_y);
+        packet.put("SOOS angle Degrees ", SOOS_h);
         packet.put("SOOS Linear scaler ", soos_Linear_scaler );
         // + counter clockwise, - clockwise
         packet.put("SOOS angular scaler ", soos_Angular_scaler);
