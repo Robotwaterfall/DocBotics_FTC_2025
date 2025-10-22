@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.teamcode.Constants.drivetrain_ka;
-import static org.firstinspires.ftc.teamcode.Constants.drivetrain_ks;
-import static org.firstinspires.ftc.teamcode.Constants.drivetrain_kv;
+import static org.firstinspires.ftc.teamcode.Constants.drivetrain_ka_x;
+import static org.firstinspires.ftc.teamcode.Constants.drivetrain_ks_x;
+import static org.firstinspires.ftc.teamcode.Constants.drivetrain_kv_x;
 import static org.firstinspires.ftc.teamcode.Constants.drivetrain_maxAccel;
 import static org.firstinspires.ftc.teamcode.Constants.drivetrain_maxVelocity;
 import static org.firstinspires.ftc.teamcode.Constants.drivetrain_targetDistance;
@@ -12,20 +12,16 @@ import static org.firstinspires.ftc.teamcode.Constants.heading_Kp;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.arcrobotics.ftclib.gamepad.GamepadEx;
-import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.Subsystem.mecanumDriveSubsystem;
 
 @Autonomous (name = "SOOS_TrapezoidalDrive")
 public class SOOS_TrapezoidalDrive extends OpMode {
@@ -49,9 +45,9 @@ public class SOOS_TrapezoidalDrive extends OpMode {
     private final double targetDistance = drivetrain_targetDistance; // inches
 
     // Feedforward Constants
-    private final double Kv = drivetrain_kv;
-    private final double Ka = drivetrain_ka;
-    private final double Ks = drivetrain_ks;
+    private final double Kv = drivetrain_kv_x;
+    private final double Ka = drivetrain_ka_x;
+    private final double Ks = drivetrain_ks_x;
 
     // HeadingPID constants
     private final double Kp = heading_Kp;

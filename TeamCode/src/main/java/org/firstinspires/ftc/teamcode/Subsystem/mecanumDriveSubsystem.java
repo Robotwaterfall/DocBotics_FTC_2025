@@ -146,11 +146,13 @@ public class mecanumDriveSubsystem extends SubsystemBase {
         SOOS_x_inches = myOtos.getPosition().y  * soos_Linear_scaler;
         SOOS_y_inches = myOtos.getPosition().x * soos_Linear_scaler;
         SOOS_h_degrees = myOtos.getPosition().h * soos_Angular_scaler;
+
         //Update robot velocity.
         SOOS_Speed_inchesPerSec = Math.hypot(myOtos.getVelocity().x, myOtos.getVelocity().y);
         SOOS_Velocity_x_inchesPerSec = myOtos.getVelocity().x;
         SOOS_Velocity_y_inchesPerSec = myOtos.getVelocity().y;
         SOOS_Velocity_h_degreesPerSec = myOtos.getVelocity().h;
+
         //Update robot acceleration.
         SOOS_Acceleration_inchesPerSecSquared = Math.hypot(myOtos.getAcceleration().x, myOtos.getAcceleration().y);
         SOOS_Acceleration_x_inchesPerSecSqaured = myOtos.getAcceleration().x;
@@ -160,11 +162,11 @@ public class mecanumDriveSubsystem extends SubsystemBase {
         //send SOOS telemetry.
         packet.put("SOOS X INCHES", SOOS_x_inches);
         packet.put("SOOS Y INCHES", SOOS_y_inches);
-        packet.put("SOOS angle Degrees ", SOOS_h_degrees);
+        packet.put("SOOS H Degrees ", SOOS_h_degrees);
 
         packet.put("SOOS Speed inchesPerSec", SOOS_Speed_inchesPerSec);
         packet.put("SOOS Velocity x inchesPerSec", SOOS_Velocity_x_inchesPerSec);
-        packet.put("SOOS Velocity x inchesPerSec", SOOS_Velocity_y_inchesPerSec);
+        packet.put("SOOS Velocity y inchesPerSec", SOOS_Velocity_y_inchesPerSec);
         packet.put("SOOS Velocity h degreesPerSec", SOOS_Velocity_h_degreesPerSec);
 
         packet.put("SOOS Acceleration inchesPerSecSqaured", SOOS_Acceleration_inchesPerSecSquared);

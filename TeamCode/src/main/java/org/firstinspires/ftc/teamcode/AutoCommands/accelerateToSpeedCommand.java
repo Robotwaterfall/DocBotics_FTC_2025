@@ -3,10 +3,13 @@ package org.firstinspires.ftc.teamcode.AutoCommands;
 import static org.firstinspires.ftc.teamcode.Constants.angularMaxSpeedError;
 import static org.firstinspires.ftc.teamcode.Constants.angularSpeedController_kd;
 import static org.firstinspires.ftc.teamcode.Constants.angularSpeedController_kp;
+import static org.firstinspires.ftc.teamcode.Constants.drivetrain_ka_y;
+import static org.firstinspires.ftc.teamcode.Constants.drivetrain_ks_y;
+import static org.firstinspires.ftc.teamcode.Constants.drivetrain_kv_y;
 import static org.firstinspires.ftc.teamcode.Constants.linearMaxSpeedError;
-import static org.firstinspires.ftc.teamcode.Constants.drivetrain_ka;
-import static org.firstinspires.ftc.teamcode.Constants.drivetrain_ks;
-import static org.firstinspires.ftc.teamcode.Constants.drivetrain_kv;
+import static org.firstinspires.ftc.teamcode.Constants.drivetrain_ka_x;
+import static org.firstinspires.ftc.teamcode.Constants.drivetrain_ks_x;
+import static org.firstinspires.ftc.teamcode.Constants.drivetrain_kv_x;
 import static org.firstinspires.ftc.teamcode.Constants.xSpeedController_kd;
 import static org.firstinspires.ftc.teamcode.Constants.xSpeedController_kp;
 import static org.firstinspires.ftc.teamcode.Constants.ySpeedController_kd;
@@ -25,7 +28,6 @@ public class accelerateToSpeedCommand extends CommandBase {
     private final double desiredSpeed_y_inchPerSec;
     private final double desiredSpeed_angle_degreesPerSec;
 
-    private double currentRobotSpeed = 0;
 
 
     private final PIDController xSpeedControler;
@@ -43,12 +45,11 @@ public class accelerateToSpeedCommand extends CommandBase {
 ) {     //initializes the x Speed Controler PID Constants and error tolerance.
         this.xSpeedControler = new PIDController(xSpeedController_kp,0, xSpeedController_kd);
         this.xSpeedControler.setTolerance(linearMaxSpeedError);
-
-
-        //initializes the y Speed Controler PID Constants and error tolerance.
+        //initializes the y Speed Controller PID Constants and error tolerance.
         this.ySpeedControler = new PIDController(ySpeedController_kp,0, ySpeedController_kd);
         this.ySpeedControler.setTolerance(linearMaxSpeedError);
 
+        //initializes the h Speed Controller PID Constants and error tolerance.
         this.hSpeedControler = new PIDController(angularSpeedController_kp,0, angularSpeedController_kd);
         this.hSpeedControler.setTolerance(angularMaxSpeedError);
 
@@ -74,12 +75,14 @@ public class accelerateToSpeedCommand extends CommandBase {
         double hSpeedPID_Output = hSpeedControler.calculate(currentRobotSpeed_angle_degreesPerSec, desiredSpeed_angle_degreesPerSec);
 
         //updates the Feedforward outputs for the speed controllers.
-        double feedforwardController_x = drivetrain_ks
-                + (driveSub.SOOS_Velocity_x_inchesPerSec * drivetrain_kv )
-                + (driveSub.SOOS_Acceleration_x_inchesPerSecSqaured * drivetrain_ka);
-        double feedforwardController_y = drivetrain_ks
-                + (driveSub.SOOS_Velocity_y_inchesPerSec * drivetrain_kv )
-                + (driveSub.SOOS_Acceleration_y_inchesPerSecSquared * drivetrain_ka);
+        double feedforwardController_x = drivetrain_ks_x
+                + (Math.abs(driveSub.SOOS_Velocity_x_inchesPerSec) * drivetrain_kv_x)
+                + (Math.abs(driveSub.SOOS_Acceleration_x_inchesPerSecSqaured) * drivetrain_ka_x);
+
+        double feedforwardController_y = drivetrain_ks_y
+                + (Math.abs(driveSub.SOOS_Velocity_y_inchesPerSec) * drivetrain_kv_y)
+                + (Math.abs(driveSub.SOOS_Acceleration_y_inchesPerSecSquared) * drivetrain_ka_y);
+
         double feedForwardCotnroller_h = 0;
 
         double xOutput = (Math.signum(xSpeedPID_Output)* feedforwardController_x) + xSpeedPID_Output;

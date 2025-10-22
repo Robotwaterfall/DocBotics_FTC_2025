@@ -1,6 +1,6 @@
-import static org.firstinspires.ftc.teamcode.Constants.drivetrain_ka;
-import static org.firstinspires.ftc.teamcode.Constants.drivetrain_ks;
-import static org.firstinspires.ftc.teamcode.Constants.drivetrain_kv;
+import static org.firstinspires.ftc.teamcode.Constants.drivetrain_ka_x;
+import static org.firstinspires.ftc.teamcode.Constants.drivetrain_ks_x;
+import static org.firstinspires.ftc.teamcode.Constants.drivetrain_kv_x;
 import static org.firstinspires.ftc.teamcode.Constants.soos_Angular_scaler;
 import static org.firstinspires.ftc.teamcode.Constants.soos_Linear_scaler;
 
@@ -9,19 +9,12 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
-import com.qualcomm.hardware.limelightvision.LLResult;
-import com.qualcomm.hardware.limelightvision.Limelight3A;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
-import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 @TeleOp(name = "SOOSFeedForwardTests")
 public class SOOS_Feedforwardtests extends OpMode {
@@ -66,7 +59,7 @@ public class SOOS_Feedforwardtests extends OpMode {
 
 
 
-        feedforward = drivetrain_ks + otos_speed * drivetrain_kv + otos_acceleration * drivetrain_ka;
+        feedforward = drivetrain_ks_x + otos_speed * drivetrain_kv_x + otos_acceleration * drivetrain_ka_x;
         if(gamepadEx.isDown(GamepadKeys.Button.A)) {
             front_left.set(feedforward);
             front_right.set(feedforward);
