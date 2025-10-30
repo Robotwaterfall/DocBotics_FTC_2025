@@ -2,13 +2,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
-import com.arcrobotics.ftclib.gamepad.GamepadKeys;
-import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Command.teleOpMecanumDriveCommand;
-import org.firstinspires.ftc.teamcode.Command.testAutoCMD;
 import org.firstinspires.ftc.teamcode.Subsystem.limelightSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystem.mecanumDriveSubsystem;
 
@@ -65,18 +62,6 @@ public class RobotContainer extends CommandOpMode {
         );
 
 
-
-
-
-        /*
-        commented out the rotate to target command for testing purposes
-        **/
-
-        //driverJoystick.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
-        //        .whenPressed(() -> {
-                    // Schedule the command manually
-        //            new rotateToTargetCMD(driveSub, llSub).schedule();
-        //        });
 
 
     }
