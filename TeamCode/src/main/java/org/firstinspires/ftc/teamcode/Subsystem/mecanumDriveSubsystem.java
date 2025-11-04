@@ -4,28 +4,30 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class mecanumDriveSubsystem extends SubsystemBase {
 
-    private final Motor m_Fl, m_Fr, m_Rl, m_Rr;
+    private final DcMotor m_Fl, m_Fr, m_Rl, m_Rr;
 
     // Store last joystick values for telemetry
     private double fwdPower, strPower, rotPower;
 
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
-    public mecanumDriveSubsystem(Motor frontLeft, Motor frontRight, Motor backLeft, Motor backRight, HardwareMap hardwareMap) {
+    public mecanumDriveSubsystem(DcMotor frontLeft, DcMotor frontRight, DcMotor backLeft, DcMotor backRight, HardwareMap hardwareMap) {
         m_Fl = frontLeft;
         m_Fr = frontRight;
         m_Rl = backLeft;
         m_Rr = backRight;
 
         // Set motor directions (typical mecanum setup)
-        m_Fl.setInverted(false);
-        m_Fr.setInverted(true);
-        m_Rl.setInverted(false);
-        m_Rr.setInverted(true);
+        m_Fl.setDirection(DcMotorSimple.Direction.FORWARD);
+        m_Fr.setDirection(DcMotorSimple.Direction.REVERSE);
+        m_Rl.setDirection(DcMotorSimple.Direction.FORWARD);
+        m_Rr.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     /**
@@ -59,10 +61,10 @@ public class mecanumDriveSubsystem extends SubsystemBase {
         br /= max;
 
         // Set motor powers
-        m_Fl.set(fl);
-        m_Fr.set(fr);
-        m_Rl.set(bl);
-        m_Rr.set(br);
+        m_Fl.setPower(fl);
+        m_Fr.setPower(fr);
+        m_Rl.setPower(bl);
+        m_Rr.setPower(br);
     }
 
     // Deadzone helper
@@ -70,18 +72,28 @@ public class mecanumDriveSubsystem extends SubsystemBase {
         return Math.abs(value) > threshold ? value : 0;
     }
 
+    public DcMotor getFl(){
+        return m_Fl;
+    }
+    public DcMotor getFr(){
+        return m_Fr;
+    }
+    public DcMotor getRl(){
+        return m_Rl;
+    }
+    public DcMotor getRr(){
+        return m_Rr;
+    }
 
-    @Override
-    public void periodic() {
-        // Send telemetry to FTC Dashboard
-        TelemetryPacket packet = new TelemetryPacket();
-        packet.put("Forward", fwdPower);
-        packet.put("Strafe", strPower);
-        packet.put("Rotation", rotPower);
-        packet.put("FL Power", m_Fl.get());
-        packet.put("FR Power", m_Fr.get());
-        packet.put("BL Power", m_Rl.get());
-        packet.put("BR Power", m_Rr.get());
-        dashboard.sendTelemetryPacket(packet);
+    public double getFwdPower(){
+        return fwdPower;
+    }
+
+    public double getStrPower(){
+        return strPower;
+    }
+
+    public double getRotPower(){
+        return rotPower;
     }
 }

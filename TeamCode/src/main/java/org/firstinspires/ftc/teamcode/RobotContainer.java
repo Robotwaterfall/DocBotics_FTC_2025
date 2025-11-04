@@ -1,20 +1,27 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
+import com.arcrobotics.ftclib.command.button.Button;
+import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
-import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.Command.rotateToTargetCMD;
+import org.firstinspires.ftc.teamcode.Command.catapultDownCommand;
+import org.firstinspires.ftc.teamcode.Command.catapultUpCommand;
+import org.firstinspires.ftc.teamcode.Command.teleOpIntakeCommand;
 import org.firstinspires.ftc.teamcode.Command.teleOpMecanumDriveCommand;
-import org.firstinspires.ftc.teamcode.Subsystem.limelightSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystem.catapultSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystem.intakeSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystem.mecanumDriveSubsystem;
 
 @TeleOp(name = "TeleOpMode")
 public class RobotContainer extends CommandOpMode {
     private mecanumDriveSubsystem driveSub;
-    private limelightSubsystem llSub;
+    private intakeSubsystem intakeSub;
+    private catapultSubsystem cataSub;
+    private TelemetryManager teleManager;
     private GamepadEx driverJoystick;
 
     @Override
@@ -22,14 +29,22 @@ public class RobotContainer extends CommandOpMode {
 
         // Mecanum Motor binding
         driveSub = new mecanumDriveSubsystem(
-                new Motor(hardwareMap, "front_left"),
-                new Motor(hardwareMap, "front_right"),
-                new Motor(hardwareMap, "back_left"),
-                new Motor(hardwareMap, "back_right"),
+                hardwareMap.get(DcMotor.class,"front_left"),
+                hardwareMap.get(DcMotor.class, "front_right"),
+                hardwareMap.get(DcMotor.class, "back_left"),
+                hardwareMap.get(DcMotor.class, "back_right"),
                 hardwareMap
         );
 
-        llSub = new limelightSubsystem(hardwareMap);
+        intakeSub = new intakeSubsystem(
+                hardwareMap.get(DcMotor.class,"intake_Motor") //TODO: change intake motor name
+        );
+
+        cataSub = new catapultSubsystem(
+                hardwareMap.get(DcMotor.class, "Catapult1Motor"), //TODO: change the catapult motor names
+                hardwareMap.get(DcMotor.class, "Catapult2Motor")
+        );
+
 
         driverJoystick = new GamepadEx(gamepad1);
 
@@ -55,23 +70,25 @@ public class RobotContainer extends CommandOpMode {
          */
         driveSub.setDefaultCommand(
                 new teleOpMecanumDriveCommand(
-                        driveSub, llSub,
+                        driveSub,
                         () -> applyDeadband(driverJoystick.getLeftY(), 0.05),  // Forward/back
                         () -> applyDeadband(driverJoystick.getLeftX(), 0.05),  // Strafe
                         () -> applyDeadband(driverJoystick.getRightX(), 0.05) // Rotate
                 )
         );
 
-        /*
-        commented out the rotate to target command for testing purposes
-        **/
+        new GamepadButton(driverJoystick, GamepadKeys.Button.A)
+                .toggleWhenPressed(new teleOpIntakeCommand(intakeSub));
 
-        //driverJoystick.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
-        //        .whenPressed(() -> {
-                    // Schedule the command manually
-        //            new rotateToTargetCMD(driveSub, llSub).schedule();
-        //        });
+        // when the up command is not running cataput will be down
+        cataSub.setDefaultCommand(
+                new catapultDownCommand(cataSub)
+        );
 
+        new GamepadButton(driverJoystick, GamepadKeys.Button.B)
+                .whenPressed(new catapultUpCommand(cataSub));
+
+        teleManager.runTelemetry();
 
     }
 
