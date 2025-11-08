@@ -12,44 +12,48 @@ import org.firstinspires.ftc.teamcode.Command.catapultDownCommand;
 import org.firstinspires.ftc.teamcode.Command.catapultUpCommand;
 import org.firstinspires.ftc.teamcode.Command.teleOpIntakeCommand;
 import org.firstinspires.ftc.teamcode.Command.teleOpMecanumDriveCommand;
+import org.firstinspires.ftc.teamcode.Command.telemetryManagerCommand;
 import org.firstinspires.ftc.teamcode.Subsystem.catapultSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystem.intakeSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystem.mecanumDriveSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystem.telemetryManagerSubsystem;
 
 @TeleOp(name = "TeleOpMode")
 public class RobotContainer extends CommandOpMode {
     private mecanumDriveSubsystem driveSub;
     private intakeSubsystem intakeSub;
     private catapultSubsystem cataSub;
-    private TelemetryManager teleManager;
+    private telemetryManagerSubsystem teleManagerSub;
     private GamepadEx driverJoystick;
 
     @Override
     public void initialize() {
 
         // Mecanum Motor binding
-        driveSub = new mecanumDriveSubsystem(
-                hardwareMap.get(DcMotor.class,"front_left"),
-                hardwareMap.get(DcMotor.class, "front_right"),
-                hardwareMap.get(DcMotor.class, "back_left"),
-                hardwareMap.get(DcMotor.class, "back_right"),
-                hardwareMap
-        );
+        //driveSub = new mecanumDriveSubsystem(
+                //hardwareMap.get(DcMotor.class,"front_left"),
+                //hardwareMap.get(DcMotor.class, "front_right"),
+                //hardwareMap.get(DcMotor.class, "back_left"),
+                //hardwareMap.get(DcMotor.class, "back_right"),
+               // hardwareMap
+       // );
 
         intakeSub = new intakeSubsystem(
                 hardwareMap.get(DcMotor.class,"intake_Motor") //TODO: change intake motor name
         );
 
-        cataSub = new catapultSubsystem(
-                hardwareMap.get(DcMotor.class, "Catapult1Motor"), //TODO: change the catapult motor names
-                hardwareMap.get(DcMotor.class, "Catapult2Motor")
-        );
+        //cataSub = new catapultSubsystem(
+               // hardwareMap.get(DcMotor.class, "Catapult1Motor"), //TODO: change the catapult motor names
+               // hardwareMap.get(DcMotor.class, "Catapult2Motor")
+        //);
 
+        teleManagerSub = new telemetryManagerSubsystem();
 
         driverJoystick = new GamepadEx(gamepad1);
 
         runCommands();
         setDefaultCommands();
+
     }
 
     /**
@@ -68,31 +72,36 @@ public class RobotContainer extends CommandOpMode {
          * Sets the joysticks to always work to drive the robot
          * unless a different Op mode is selected
          */
-        driveSub.setDefaultCommand(
-                new teleOpMecanumDriveCommand(
-                        driveSub,
-                        () -> applyDeadband(driverJoystick.getLeftY(), 0.05),  // Forward/back
-                        () -> applyDeadband(driverJoystick.getLeftX(), 0.05),  // Strafe
-                        () -> applyDeadband(driverJoystick.getRightX(), 0.05) // Rotate
+       // driveSub.setDefaultCommand(
+          //      new teleOpMecanumDriveCommand(
+          //              driveSub,
+         //               () -> applyDeadband(driverJoystick.getLeftY(), 0.05),  // Forward/back
+          //              () -> applyDeadband(driverJoystick.getLeftX(), 0.05),  // Strafe
+        //                () -> applyDeadband(driverJoystick.getRightX(), 0.05) // Rotate
+            //    )
+       // );
+
+        intakeSub.setDefaultCommand(
+                new teleOpIntakeCommand(
+                        intakeSub,
+                        () -> driverJoystick.getButton(GamepadKeys.Button.A)
                 )
         );
 
-        new GamepadButton(driverJoystick, GamepadKeys.Button.A)
-                .toggleWhenPressed(new teleOpIntakeCommand(intakeSub));
-
         // when the up command is not running cataput will be down
-        cataSub.setDefaultCommand(
-                new catapultDownCommand(cataSub)
-        );
+        //cataSub.setDefaultCommand(
+          //      new catapultDownCommand(cataSub)
+        //);
 
-        new GamepadButton(driverJoystick, GamepadKeys.Button.B)
-                .whenPressed(new catapultUpCommand(cataSub));
+       // new GamepadButton(driverJoystick, GamepadKeys.Button.B)
+                //.whenPressed(new catapultUpCommand(cataSub));
 
-        teleManager.runTelemetry();
 
     }
 
     private void runCommands() {
         // Add other commands here if needed
+
+        teleManagerSub.setDefaultCommand(new telemetryManagerCommand(teleManagerSub));
     }
 }

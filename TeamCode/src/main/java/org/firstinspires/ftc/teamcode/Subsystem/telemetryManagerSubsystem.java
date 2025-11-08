@@ -1,16 +1,12 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Subsystem;
 
 import static org.firstinspires.ftc.teamcode.Subsystem.catapultSubsystem.pivotMode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.arcrobotics.ftclib.command.CommandBase;
+import com.arcrobotics.ftclib.command.SubsystemBase;
 
-import org.firstinspires.ftc.teamcode.Subsystem.catapultSubsystem;
-import org.firstinspires.ftc.teamcode.Subsystem.intakeSubsystem;
-import org.firstinspires.ftc.teamcode.Subsystem.mecanumDriveSubsystem;
-
-public class TelemetryManager {
+public class telemetryManagerSubsystem extends SubsystemBase {
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
     catapultSubsystem cataSub;
