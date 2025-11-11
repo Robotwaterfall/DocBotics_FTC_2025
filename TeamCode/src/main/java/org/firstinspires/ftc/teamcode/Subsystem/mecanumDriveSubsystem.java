@@ -96,4 +96,17 @@ public class mecanumDriveSubsystem extends SubsystemBase {
     public double getRotPower(){
         return rotPower;
     }
+
+    @Override
+    public void periodic() {
+        TelemetryPacket drivePacket = new TelemetryPacket();
+        drivePacket.put("Forward", getFwdPower());
+        drivePacket.put("Strafe", getStrPower());
+        drivePacket.put("Rotation", getRotPower());
+        drivePacket.put("FL Power", getFl());
+        drivePacket.put("FR Power", getFr());
+        drivePacket.put("BL Power", getRl());
+        drivePacket.put("BR Power", getRr());
+        dashboard.sendTelemetryPacket(drivePacket);
+    }
 }

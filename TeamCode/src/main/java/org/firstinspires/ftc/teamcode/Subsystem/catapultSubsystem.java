@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Subsystem;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.arcrobotics.ftclib.controller.PIDFController;
@@ -20,6 +22,7 @@ public class catapultSubsystem extends SubsystemBase {
 
     public static enum CatapultModes {UP, DOWN, BRAKE}
     public static CatapultModes pivotMode;
+    private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
 
 
@@ -57,9 +60,13 @@ public class catapultSubsystem extends SubsystemBase {
         catapult2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
-
-
-
-
-
+    @Override
+    public void periodic() {
+        // Send catapult telemetry to FTC Dashboard
+        TelemetryPacket cataPacket = new TelemetryPacket();
+        cataPacket.put("cataPhase", pivotMode);
+        cataPacket.put("m_cataput1_motorpower", getM_catapult1().getPower());
+        cataPacket.put("m_cataput2_motorpower", getM_catapult2().getPower());
+        dashboard.sendTelemetryPacket(cataPacket);
+    }
 }

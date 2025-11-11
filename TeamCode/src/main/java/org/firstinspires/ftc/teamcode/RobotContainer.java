@@ -8,18 +8,15 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Command.catapultCommand;
 import org.firstinspires.ftc.teamcode.Command.teleOpIntakeCommand;
-import org.firstinspires.ftc.teamcode.Command.telemetryManagerCommand;
 import org.firstinspires.ftc.teamcode.Subsystem.catapultSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystem.intakeSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystem.mecanumDriveSubsystem;
-import org.firstinspires.ftc.teamcode.Subsystem.telemetryManagerSubsystem;
 
 @TeleOp(name = "TeleOpMode")
 public class RobotContainer extends CommandOpMode {
     private mecanumDriveSubsystem driveSub;
     private intakeSubsystem intakeSub;
     private catapultSubsystem cataSub;
-    private telemetryManagerSubsystem teleManagerSub;
     private GamepadEx driverJoystick;
 
     @Override
@@ -44,8 +41,6 @@ public class RobotContainer extends CommandOpMode {
         );
 
 
-
-        teleManagerSub = new telemetryManagerSubsystem();
 
         driverJoystick = new GamepadEx(gamepad1);
 
@@ -85,6 +80,8 @@ public class RobotContainer extends CommandOpMode {
                         () -> driverJoystick.getButton(GamepadKeys.Button.A)
                 )
         );
+
+
 
 
     }
