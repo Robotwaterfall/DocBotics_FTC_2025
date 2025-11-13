@@ -103,10 +103,10 @@ public class mecanumDriveSubsystem extends SubsystemBase {
         drivePacket.put("Forward", getFwdPower());
         drivePacket.put("Strafe", getStrPower());
         drivePacket.put("Rotation", getRotPower());
-        drivePacket.put("FL Power", getFl());
-        drivePacket.put("FR Power", getFr());
-        drivePacket.put("BL Power", getRl());
-        drivePacket.put("BR Power", getRr());
+        drivePacket.put("FL Power", getFl().getPower());
+        drivePacket.put("FR Power", getFr().getPower());
+        drivePacket.put("BL Power", getRl().getPower());
+        drivePacket.put("BR Power", getRr().getPower());
         dashboard.sendTelemetryPacket(drivePacket);
     }
 }

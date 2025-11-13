@@ -20,8 +20,6 @@ public class catapultSubsystem extends SubsystemBase {
 
     private int cataSetpoint = 0;
 
-    public static enum CatapultModes {UP, DOWN, BRAKE}
-    public static CatapultModes pivotMode;
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
 
@@ -60,13 +58,24 @@ public class catapultSubsystem extends SubsystemBase {
         catapult2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
+    public void stopAndRestEncoder(){
+        catapult1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        catapult2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    public void runUsingEncoder(){
+        catapult1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        catapult2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
     @Override
     public void periodic() {
         // Send catapult telemetry to FTC Dashboard
         TelemetryPacket cataPacket = new TelemetryPacket();
-        cataPacket.put("cataPhase", pivotMode);
         cataPacket.put("m_cataput1_motorpower", getM_catapult1().getPower());
         cataPacket.put("m_cataput2_motorpower", getM_catapult2().getPower());
+        cataPacket.put("MotorticksM1", getM_catapult1().getCurrentPosition());
+        cataPacket.put("MotorticksM2", getM_catapult2().getCurrentPosition());
         dashboard.sendTelemetryPacket(cataPacket);
     }
 }

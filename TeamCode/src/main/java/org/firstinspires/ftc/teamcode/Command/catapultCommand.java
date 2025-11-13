@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.teamcode.Command;
 
-import static org.firstinspires.ftc.teamcode.Constants.cataPower;
-import static org.firstinspires.ftc.teamcode.Constants.cata_Gear_Reduction;
+import static org.firstinspires.ftc.teamcode.Constants.CATA_POWER;
+import static org.firstinspires.ftc.teamcode.Constants.DEGREES_PER_TICK;
+import static org.firstinspires.ftc.teamcode.Constants.RUBBER_BAND_FEEDFORWARD;
 
 import com.arcrobotics.ftclib.command.CommandBase;
-import com.arcrobotics.ftclib.hardware.motors.MotorGroup;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Subsystem.catapultSubsystem;
@@ -12,51 +12,50 @@ import org.firstinspires.ftc.teamcode.Subsystem.catapultSubsystem;
 public class catapultCommand extends CommandBase {
 
     private final catapultSubsystem cataSub;
-    private final int cataSetpointDeg;
-    private MotorGroup catapult;
+    private final double cataSetpointDeg;
 
-    public catapultCommand(catapultSubsystem cataSub, int cataSetpointDeg){
+    public catapultCommand(catapultSubsystem cataSub, int cataSetpointDeg) {
         this.cataSub = cataSub;
-        this.cataSetpointDeg = cataSub.getCataSetpoint();
+        this.cataSetpointDeg = cataSetpointDeg;
         addRequirements(cataSub);
 
     }
 
     @Override
     public void initialize() {
-        cataSub.getM_catapult1().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        cataSub.getM_catapult2().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        cataSub.stopAndRestEncoder();
+
+        cataSub.getM_catapult1().setPower(0);
+        cataSub.getM_catapult2().setPower(0);
+
+        cataSub.runUsingEncoder();
+
 
 
     }
 
     @Override
     public void execute() {
-        DcMotor cata1Motor = cataSub.getM_catapult1();
+        DcMotor cataMotor = cataSub.getM_catapult1();
         DcMotor cata2Motor = cataSub.getM_catapult2();
 
-        int currentPosition = cata1Motor.getCurrentPosition();
 
-        double cataTarget;
+        // Convert degrees to encoder ticks
+        double cataTargetTicks = cataSetpointDeg / DEGREES_PER_TICK;
 
-        double Ticks_Per_Output_Rev = currentPosition * cata_Gear_Reduction;
-        double degress_Per_Tick = 360 / Ticks_Per_Output_Rev;
+        cataSub.setCataSetpoint((int) cataTargetTicks); // save or update setpoint in subsystem
 
+        cataMotor.setTargetPosition((int) cataTargetTicks);
+        cata2Motor.setTargetPosition((int) cataTargetTicks);
 
-        cataTarget =  cataSetpointDeg * (degress_Per_Tick);
+        cataSub.runToPosition(); // sets RUN_TO_POSITION mode for both motors
 
-        cata1Motor.setTargetPosition((int) cataTarget);
-        cata1Motor.setTargetPosition((int) cataTarget);
-
-        cataSub.runToPosition();
-
-        cata1Motor.setPower(cataPower); //cata power
-        cata2Motor.setPower(cataPower);
-
-
+        cataMotor.setPower(CATA_POWER + RUBBER_BAND_FEEDFORWARD);
+        cata2Motor.setPower(CATA_POWER + RUBBER_BAND_FEEDFORWARD);
     }
 
-    public boolean isFinished(){
-        return !cataSub.getM_catapult1().isBusy() || !cataSub.getM_catapult2().isBusy();
+    public boolean isFinished() {
+        // Both motors have reached their target positions
+        return !cataSub.getM_catapult1().isBusy() && !cataSub.getM_catapult2().isBusy();
     }
 }

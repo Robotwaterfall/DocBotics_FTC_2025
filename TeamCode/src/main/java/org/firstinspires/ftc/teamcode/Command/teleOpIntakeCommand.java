@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Command;
 
+import static org.firstinspires.ftc.teamcode.Constants.intake_POWER;
+
 import com.arcrobotics.ftclib.command.CommandBase;
 
 import org.firstinspires.ftc.teamcode.Subsystem.intakeSubsystem;
@@ -33,7 +35,7 @@ public class teleOpIntakeCommand extends CommandBase {
         lastToggleState = currentButtonState;
 
         if(toggleState){
-            intakeSub.setM_intakeMotorPower(0.8); //power set to 80%
+            intakeSub.setM_intakeMotorPower(intake_POWER); //power set to 80%
         } else {
             intakeSub.setM_intakeMotorPower(0);
         }

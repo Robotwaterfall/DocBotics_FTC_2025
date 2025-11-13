@@ -1,6 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.teamcode.Constants.cata_Down_setpoint;
+import static org.firstinspires.ftc.teamcode.Constants.cata_Up_setpoint;
+
 import com.arcrobotics.ftclib.command.CommandOpMode;
+import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -8,6 +12,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Command.catapultCommand;
 import org.firstinspires.ftc.teamcode.Command.teleOpIntakeCommand;
+import org.firstinspires.ftc.teamcode.Command.teleOpMecanumDriveCommand;
 import org.firstinspires.ftc.teamcode.Subsystem.catapultSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystem.intakeSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystem.mecanumDriveSubsystem;
@@ -23,17 +28,17 @@ public class RobotContainer extends CommandOpMode {
     public void initialize() {
 
         // Mecanum Motor binding
-        //driveSub = new mecanumDriveSubsystem(
-                //hardwareMap.get(DcMotor.class,"front_left"),
-                //hardwareMap.get(DcMotor.class, "front_right"),
-                //hardwareMap.get(DcMotor.class, "back_left"),
-                //hardwareMap.get(DcMotor.class, "back_right"),
-               // hardwareMap
-       // );
-
-        intakeSub = new intakeSubsystem(
-                hardwareMap.get(DcMotor.class,"intake_Motor")
+        driveSub = new mecanumDriveSubsystem(
+                hardwareMap.get(DcMotor.class,"front_left"),
+                hardwareMap.get(DcMotor.class, "front_right"),
+                hardwareMap.get(DcMotor.class, "back_left"),
+                hardwareMap.get(DcMotor.class, "back_right"),
+                hardwareMap
         );
+
+       // intakeSub = new intakeSubsystem(
+         //       hardwareMap.get(DcMotor.class,"intake_Motor")
+       // );
 
         cataSub = new catapultSubsystem(
                 hardwareMap.get(DcMotor.class, "CatapultMotor1"),
@@ -65,21 +70,28 @@ public class RobotContainer extends CommandOpMode {
          * Sets the joysticks to always work to drive the robot
          * unless a different Op mode is selected
          */
-       // driveSub.setDefaultCommand(
-          //      new teleOpMecanumDriveCommand(
-          //              driveSub,
-         //               () -> applyDeadband(driverJoystick.getLeftY(), 0.05),  // Forward/back
-          //              () -> applyDeadband(driverJoystick.getLeftX(), 0.05),  // Strafe
-        //                () -> applyDeadband(driverJoystick.getRightX(), 0.05) // Rotate
-            //    )
-       // );
-
-        intakeSub.setDefaultCommand(
-                new teleOpIntakeCommand(
-                        intakeSub,
-                        () -> driverJoystick.getButton(GamepadKeys.Button.A)
+        driveSub.setDefaultCommand(
+               new teleOpMecanumDriveCommand(
+                        driveSub,
+                        () -> applyDeadband(driverJoystick.getLeftY(), 0.05),  // Forward/back
+                        () -> applyDeadband(driverJoystick.getLeftX(), 0.05),  // Strafe
+                        () -> applyDeadband(driverJoystick.getRightX(), 0.05) // Rotate
                 )
         );
+
+       // intakeSub.setDefaultCommand(
+        //        new teleOpIntakeCommand(
+          //              intakeSub,
+          //              () -> driverJoystick.getButton(GamepadKeys.Button.A)
+           //     )
+        //);
+
+        driverJoystick.getGamepadButton(GamepadKeys.Button.B)
+                .whenPressed(new SequentialCommandGroup(
+                        new catapultCommand(cataSub, cata_Up_setpoint),
+                        new catapultCommand(cataSub, cata_Down_setpoint)
+                ));
+
 
 
 
@@ -89,7 +101,6 @@ public class RobotContainer extends CommandOpMode {
     private void runCommands() {
         // Add other commands here if needed
 
-        driverJoystick.getGamepadButton(GamepadKeys.Button.B)
-                .whenPressed(new catapultCommand(cataSub, 90));
+
     }
 }

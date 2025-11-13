@@ -32,9 +32,9 @@ public class teleOpMecanumDriveCommand extends CommandBase {
     public void execute() {
 
             //Normal teleoperated drive if limelight does not see april tag
-            double forward = ySupplier.get();
-            double strafe  = xSupplier.get();
-            double rotation = rSupplier.get();
+            double forward = -ySupplier.get();
+            double strafe  = -xSupplier.get();
+            double rotation = -rSupplier.get();
 
             driveSub.drive(forward, strafe, rotation);
         }
