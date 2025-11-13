@@ -38,14 +38,14 @@ public class RobotContainer extends CommandOpMode {
                // hardwareMap
        // );
 
-        intakeSub = new intakeSubsystem(
-                hardwareMap.get(DcMotor.class,"intake_Motor") //TODO: change intake motor name
-        );
-
-        //cataSub = new catapultSubsystem(
-               // hardwareMap.get(DcMotor.class, "Catapult1Motor"), //TODO: change the catapult motor names
-               // hardwareMap.get(DcMotor.class, "Catapult2Motor")
+        //intakeSub = new intakeSubsystem(
+          //      hardwareMap.get(DcMotor.class,"intake_Motor") //TODO: change intake motor name
         //);
+
+        cataSub = new catapultSubsystem(
+                hardwareMap.get(DcMotor.class, "Catapult1Motor"), //TODO: change the catapult motor names
+                hardwareMap.get(DcMotor.class, "Catapult2Motor")
+        );
 
         teleManagerSub = new telemetryManagerSubsystem();
 
@@ -81,20 +81,17 @@ public class RobotContainer extends CommandOpMode {
             //    )
        // );
 
-        intakeSub.setDefaultCommand(
-                new teleOpIntakeCommand(
-                        intakeSub,
-                        () -> driverJoystick.getButton(GamepadKeys.Button.A)
-                )
-        );
+       // intakeSub.setDefaultCommand(
+       //         new teleOpIntakeCommand(
+       //                 intakeSub,
+       //                 () -> driverJoystick.getButton(GamepadKeys.Button.A)
+       //         )
+       // );
 
-        // when the up command is not running cataput will be down
-        //cataSub.setDefaultCommand(
-          //      new catapultDownCommand(cataSub)
-        //);
+        cataSub.setDefaultCommand(new catapultDownCommand(cataSub));
 
-       // new GamepadButton(driverJoystick, GamepadKeys.Button.B)
-                //.whenPressed(new catapultUpCommand(cataSub));
+        new GamepadButton(driverJoystick, GamepadKeys.Button.B)
+                .whenPressed(new catapultUpCommand(cataSub));
 
 
     }

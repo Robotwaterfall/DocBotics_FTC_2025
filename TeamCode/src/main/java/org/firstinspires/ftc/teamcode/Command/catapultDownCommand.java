@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Command;
 
+import static org.firstinspires.ftc.teamcode.Constants.cataTimeElapsed;
 import static org.firstinspires.ftc.teamcode.Constants.catapult_down_power;
 import static org.firstinspires.ftc.teamcode.Subsystem.catapultSubsystem.pivotMode;
 
@@ -34,8 +35,8 @@ public class catapultDownCommand extends CommandBase {
 
             cataDownTime.startTime();
 
-            double cata_to_down_time = 1.0;
-            while(cataDownTime.seconds() < cata_to_down_time){
+
+            while(cataDownTime.seconds() < cataTimeElapsed){
 
                 pivotMode = catapultSubsystem.CatapultModes.DOWN;
                 //power the motors to make the catapult go back down

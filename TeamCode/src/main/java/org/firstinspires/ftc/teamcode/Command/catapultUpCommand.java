@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Command;
 
+import static org.firstinspires.ftc.teamcode.Constants.cataTimeElapsed;
 import static org.firstinspires.ftc.teamcode.Constants.catapult_up_power;
 import static org.firstinspires.ftc.teamcode.Subsystem.catapultSubsystem.pivotMode;
 
@@ -48,7 +49,7 @@ public class catapultUpCommand extends CommandBase {
 
     @Override
     public boolean isFinished(){
-        if(cataUpTime.seconds() == 0.8 && pivotMode.equals(catapultSubsystem.CatapultModes.UP)){
+        if(cataUpTime.seconds() <= cataTimeElapsed && pivotMode.equals(catapultSubsystem.CatapultModes.UP)){
             return true;
         } else {
             return false;
