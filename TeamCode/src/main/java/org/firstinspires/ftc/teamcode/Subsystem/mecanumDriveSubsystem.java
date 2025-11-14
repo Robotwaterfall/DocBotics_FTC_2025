@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class mecanumDriveSubsystem extends SubsystemBase {
 
-    private final DcMotor m_Fl, m_Fr, m_Rl, m_Rr;
+    public final DcMotor m_Fl, m_Fr, m_Rl, m_Rr;
 
     // Store last joystick values for telemetry
     private double fwdPower, strPower, rotPower;

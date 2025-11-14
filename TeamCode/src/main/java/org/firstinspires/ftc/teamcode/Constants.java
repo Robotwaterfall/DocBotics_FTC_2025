@@ -21,6 +21,30 @@ public class Constants {
 
     public static double RUBBER_BAND_FEEDFORWARD = 0.2; // Start low, tune higher if needed
 
+    public static final class AutoConstants{
+        public static boolean isArmJointLimiterOff;
+        public static final double turnkP = 0.01;
+        public static final double turnkI = 0;
+        public static final double turnkD = 0;
+        public static final double turnkF = 0;
+
+        public static final double movekP = 0.06;
+        public static final double movekI = 0;
+        public static final double movekD = 0.01;
+        public static final double movekF = 0;
+    }
+    public static final class encoderAutoConstants{
+        public static final double     DRIVE_SPEED             = 0.25;
+        public static final double     TURN_SPEED              = 0.5;
+
+        public static final double     COUNTS_PER_MOTOR_REV    = 28 ;    // REV ultraplanetary motor
+        public static final double     DRIVE_GEAR_REDUCTION    = 20 ;     // External Gearing.
+        public static final double     WHEEL_DIAMETER_INCHES   = 3 ;     // For figuring circumference
+        public static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+                (WHEEL_DIAMETER_INCHES * Math.PI);
+
+    }
+
 
 
 

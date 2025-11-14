@@ -53,7 +53,7 @@ public class autoRobotContainer extends CommandOpMode {
 
 
     private void initSubsystems(){
-        driveSub = new mecanumDriveSubsystem(frontLeft, frontRight, backLeft, backRight, imu, hardwareMap);
+        driveSub = new mecanumDriveSubsystem(frontLeft, frontRight, backLeft, backRight, hardwareMap);
 
     }
 
