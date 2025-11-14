@@ -57,11 +57,11 @@ public class MoveRobotEncoderXY_CMD extends CommandBase {
         backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        newFrontLeftTarget = frontLeft.getCurrentPosition() + (int)(m_leftInches * Constants.encoderAutoConstants.COUNTS_PER_INCH);
-        newFrontRightTarget = frontRight.getCurrentPosition() + (int)(m_rightInches * Constants.encoderAutoConstants.COUNTS_PER_INCH);
+        newFrontLeftTarget = frontLeft.getCurrentPosition() + (int)(-m_leftInches * Constants.encoderAutoConstants.COUNTS_PER_INCH);
+        newFrontRightTarget = frontRight.getCurrentPosition() + (int)(-m_rightInches * Constants.encoderAutoConstants.COUNTS_PER_INCH);
 
-        newBackLeftTarget = backLeft.getCurrentPosition() + ((int)(m_leftInches * Constants.encoderAutoConstants.COUNTS_PER_INCH));
-        newBackRightTarget = backRight.getCurrentPosition() + ((int)(m_rightInches * Constants.encoderAutoConstants.COUNTS_PER_INCH));
+        newBackLeftTarget = backLeft.getCurrentPosition() + ((int)(-m_leftInches * Constants.encoderAutoConstants.COUNTS_PER_INCH));
+        newBackRightTarget = backRight.getCurrentPosition() + ((int)(-m_rightInches * Constants.encoderAutoConstants.COUNTS_PER_INCH));
 
 
         frontLeft.setTargetPosition(newFrontLeftTarget);

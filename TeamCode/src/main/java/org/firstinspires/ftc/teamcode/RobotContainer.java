@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Command.catapultCommand;
+import org.firstinspires.ftc.teamcode.Command.holdCatapultCMD;
 import org.firstinspires.ftc.teamcode.Command.teleOpIntakeCommand;
 import org.firstinspires.ftc.teamcode.Command.teleOpMecanumDriveCommand;
 import org.firstinspires.ftc.teamcode.Subsystem.catapultSubsystem;
@@ -21,6 +22,8 @@ import org.firstinspires.ftc.teamcode.Subsystem.mecanumDriveSubsystem;
 public class RobotContainer extends CommandOpMode {
     private mecanumDriveSubsystem driveSub;
     private intakeSubsystem intakeSub;
+
+    private holdCatapultCMD holdCata;
     private catapultSubsystem cataSub;
     private GamepadEx driverJoystick;
 
@@ -45,12 +48,18 @@ public class RobotContainer extends CommandOpMode {
                 hardwareMap.get(DcMotor.class, "CatapultMotor2")
         );
 
+        // Create your hold command
+        holdCata = new holdCatapultCMD(cataSub);
+
+
 
 
         driverJoystick = new GamepadEx(gamepad1);
 
         runCommands();
         setDefaultCommands();
+
+        holdCata.schedule();
 
     }
 

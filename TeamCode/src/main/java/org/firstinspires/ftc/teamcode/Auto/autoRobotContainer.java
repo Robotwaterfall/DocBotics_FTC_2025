@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.teamcode.Constants;
+import org.firstinspires.ftc.teamcode.Subsystem.catapultSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystem.mecanumDriveSubsystem;
 
 public class autoRobotContainer extends CommandOpMode {
@@ -14,10 +15,12 @@ public class autoRobotContainer extends CommandOpMode {
     public DcMotor frontRight;
     public DcMotor backLeft;
     public DcMotor backRight;
-
-    public IMU imu;
-    public IMU.Parameters myParameters;
     public mecanumDriveSubsystem driveSub;
+
+
+    public catapultSubsystem cataSub;
+    public DcMotor cataMotor;
+    public DcMotor cata2Motor;
 
 
 
@@ -29,19 +32,21 @@ public class autoRobotContainer extends CommandOpMode {
         backLeft = hardwareMap.get(DcMotor.class, "back_left");
         backRight = hardwareMap.get(DcMotor.class, "back_right");
 
-        imu = hardwareMap.get(IMU.class, "imu");
 
         backLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         backRight.setDirection(DcMotorSimple.Direction.REVERSE);
         frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        myParameters = new IMU.Parameters(
-                new RevHubOrientationOnRobot(
-                        RevHubOrientationOnRobot.LogoFacingDirection.FORWARD,
-                        RevHubOrientationOnRobot.UsbFacingDirection.LEFT
-                )
+        cataSub = new catapultSubsystem(
+               cataMotor = hardwareMap.get(DcMotor.class, "CatapultMotor1"),
+               cata2Motor = hardwareMap.get(DcMotor.class, "CatapultMotor2")
         );
+
+        cataMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        cata2Motor.setDirection(DcMotorSimple.Direction.FORWARD);
+
+
 
 
 
@@ -54,6 +59,8 @@ public class autoRobotContainer extends CommandOpMode {
 
     private void initSubsystems(){
         driveSub = new mecanumDriveSubsystem(frontLeft, frontRight, backLeft, backRight, hardwareMap);
+
+        cataSub = new catapultSubsystem(cataMotor, cata2Motor);
 
     }
 
