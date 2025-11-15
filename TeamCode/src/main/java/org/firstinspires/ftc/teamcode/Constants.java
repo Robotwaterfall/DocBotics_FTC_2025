@@ -19,7 +19,7 @@ public class Constants {
 
     public static int cata_Up_setpoint = 0;
     //TODO Check Down position.
-    public static int cata_Down_setpoint = -4;
+    public static int cata_Down_setpoint = -3;
 
     public static double RUBBER_BAND_FEEDFORWARD = 0.2; // Start low, tune higher if needed
 

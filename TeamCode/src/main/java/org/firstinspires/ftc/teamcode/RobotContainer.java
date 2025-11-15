@@ -113,7 +113,11 @@ public class RobotContainer extends CommandOpMode {
         // arm goes down then puts setpoint to 0 making the motors go up.
         driverJoystick.getGamepadButton(GamepadKeys.Button.B)
                 .whenPressed(new SequentialCommandGroup(
-                        new catapultCommand(cataSub, cata_Down_setpoint),
+                        new catapultCommand(cataSub, cata_Down_setpoint)
+                ));
+
+        driverJoystick.getGamepadButton(GamepadKeys.Button.Y)
+                .whenPressed(new SequentialCommandGroup(
                         new catapultCommand(cataSub, cata_Up_setpoint)
                 ));
 
