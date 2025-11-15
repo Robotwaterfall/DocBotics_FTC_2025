@@ -17,8 +17,9 @@ public class Constants {
     public static final int TICKS_PER_OUTPUT_REV = (int)(MOTOR_TICKS_PER_REV * CATA_GEAR_REDUCTION);
     public static final double DEGREES_PER_TICK = 360.0 / TICKS_PER_OUTPUT_REV;
 
-    public static int cata_Up_setpoint = 1;
-    public static int cata_Down_setpoint = -1;
+    public static int cata_Up_setpoint = 0;
+    //TODO Check Down position.
+    public static int cata_Down_setpoint = -4;
 
     public static double RUBBER_BAND_FEEDFORWARD = 0.2; // Start low, tune higher if needed
 

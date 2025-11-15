@@ -28,6 +28,8 @@ public class catapultSubsystem extends SubsystemBase {
 
         this.catapult1 = m_catapult1;
         this.catapult2 = m_catapult2;
+//RUN ONCE.
+        stopAndRestEncoder();
 
 
         m_catapult1.setDirection(DcMotorSimple.Direction.REVERSE);

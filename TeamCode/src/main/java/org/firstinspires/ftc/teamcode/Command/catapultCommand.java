@@ -23,7 +23,7 @@ public class catapultCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        cataSub.stopAndRestEncoder();
+
 
         cataSub.getM_catapult1().setPower(0);
         cataSub.getM_catapult2().setPower(0);

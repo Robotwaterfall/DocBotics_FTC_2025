@@ -28,7 +28,6 @@ public class RobotContainer extends CommandOpMode {
     private intakeSubsystem intakeSub;
     private catapultSubsystem cataSub;
 
-//    private catapultSubsystem cataSub;
     private GamepadEx driverJoystick;
 
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
@@ -48,11 +47,13 @@ public class RobotContainer extends CommandOpMode {
         intakeSub = new intakeSubsystem(
                 hardwareMap.get(DcMotor.class,"intake_Motor")
         );
-
-//        cataSub = new catapultSubsystem(
-//                hardwareMap.get(DcMotor.class, "CatapultMotor1"),
-//                hardwareMap.get(DcMotor.class, "CatapultMotor2")
-//        );
+        /*catapult motors. "CatapultMotor1" is the left catapult motor,
+         "CatapultMotor2" is the catapult right motor
+         */
+        cataSub = new catapultSubsystem(
+                hardwareMap.get(DcMotor.class, "CatapultMotor1"),
+                hardwareMap.get(DcMotor.class, "CatapultMotor2")
+        );
 
 
 
@@ -108,6 +109,13 @@ public class RobotContainer extends CommandOpMode {
 //                .whenPressed(new SequentialCommandGroup(
 //                        new catapultCommand()
 //                ));
+        // when catapult is at resting position the encoders reset at init. then when b is pressed the catapult
+        // arm goes down then puts setpoint to 0 making the motors go up.
+        driverJoystick.getGamepadButton(GamepadKeys.Button.B)
+                .whenPressed(new SequentialCommandGroup(
+                        new catapultCommand(cataSub, cata_Down_setpoint),
+                        new catapultCommand(cataSub, cata_Up_setpoint)
+                ));
 
 
 
