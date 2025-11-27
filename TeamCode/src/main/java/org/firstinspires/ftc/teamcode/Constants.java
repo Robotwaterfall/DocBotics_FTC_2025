@@ -8,13 +8,15 @@ public class Constants {
     // motor powers
     public static double intake_POWER = 1.0;
 
-    public static double min_Shooter_Power = 0.3;
+//    powers in which the shooter has set too.
+    public static double min_Shooter_Power = 0.4;
     public static  double max_Shooter_Power = 1.0;
 
 
     //Limelight
-    public static double min_Ty = -10;
-    public static double max_Ty = 10;
+    public static double min_Ty = -12; //Constrains in which the shooter
+                                        // doesnt react with the april tag
+    public static double max_Ty = 12;
 
 
 

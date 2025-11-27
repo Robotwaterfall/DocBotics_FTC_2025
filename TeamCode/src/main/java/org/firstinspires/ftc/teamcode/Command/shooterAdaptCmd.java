@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.Command;
 
 import static org.firstinspires.ftc.teamcode.Constants.max_Shooter_Power;
+import static org.firstinspires.ftc.teamcode.Constants.max_Ty;
 import static org.firstinspires.ftc.teamcode.Constants.min_Shooter_Power;
+import static org.firstinspires.ftc.teamcode.Constants.min_Ty;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -32,14 +34,17 @@ public class shooterAdaptCmd extends CommandBase {
 
 
     // 1) Clamp ty to a sane range (numbers you see in practice)
-        double tyMin = -10;   // tune from real data
-        double tyMax =  10;
+        double tyMin = min_Ty;   // tune from real data
+        double tyMax =  max_Ty;
 
         if (ty < tyMin) ty = tyMin;
         if (ty > tyMax) ty = tyMax;
 
     // 2) Normalize ty -> 0..1  (or 0..100)
-        double normalized = (ty - tyMin) / (tyMax - tyMin); // 0..1
+        double normalized = (ty - tyMin) / (tyMax - tyMin);
+
+        normalized = 1.0 - normalized;
+
         double shooterPercent = normalized * 100.0;         // 0..100
 
         double minPower = min_Shooter_Power;
