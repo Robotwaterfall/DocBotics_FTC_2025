@@ -20,6 +20,7 @@ import org.firstinspires.ftc.teamcode.Subsystem.mecanumDriveSubsystem;
 @TeleOp(name = "TeleOpMode")
 public class RobotContainer extends CommandOpMode {
 //    private mecanumDriveSubsystem driveSub;
+
 //    private intakeSubsystem intakeSub;
     private cShooterSubsystem shooterSub;
 
@@ -44,7 +45,8 @@ public class RobotContainer extends CommandOpMode {
 //        );
 
         shooterSub = new cShooterSubsystem(
-                hardwareMap.get(DcMotor.class, "shooter_Motor") //TODO: change shooter motor name
+                hardwareMap.get(DcMotor.class, "shootermotor1"),
+                hardwareMap.get(DcMotor.class, "shootermotor2")//TODO: change shooter motor name
         );
 
         llsub = new limelightSubsystem(
@@ -59,6 +61,8 @@ public class RobotContainer extends CommandOpMode {
 
         runCommands();
         setDefaultCommands();
+
+
 
 
 
@@ -78,8 +82,8 @@ public class RobotContainer extends CommandOpMode {
     public void setDefaultCommands() {
         /*
          * Sets the joysticks to always work to drive the robot
-         * unless a different Op mode is selected
-         */
+//         * unless a different Op mode is selected
+//         */
 //        driveSub.setDefaultCommand(
 //               new teleOpMecanumDriveCommand(
 //                        driveSub,

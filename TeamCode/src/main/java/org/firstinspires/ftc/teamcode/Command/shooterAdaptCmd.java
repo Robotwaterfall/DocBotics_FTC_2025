@@ -56,7 +56,7 @@ public class shooterAdaptCmd extends CommandBase {
         if (shooterPower < minPower) shooterPower = minPower;
         if (shooterPower > maxPower) shooterPower = maxPower;
 
-        shooterSub.setShooterMotorPower(shooterPower);
+        shooterSub.setShooterMotorPower(-shooterPower);
 
 
     }
